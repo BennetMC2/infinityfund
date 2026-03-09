@@ -4,7 +4,7 @@ import KPICard from "@/components/KPICard";
 import BetBadge from "@/components/BetBadge";
 import SportBadge from "@/components/SportBadge";
 import {
-  DollarSign, Percent, Target, TrendingUp, Zap, Award
+  DollarSign, Percent, Trophy, TrendingUp, Zap, Award
 } from "lucide-react";
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis,
@@ -72,16 +72,16 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
           label="Win Rate"
           value={`${stats.winRate.toFixed(1)}%`}
           sub={`${stats.wins}W · ${stats.losses}L · ${stats.pushes}P`}
-          positive={stats.winRate >= 50}
+          positive={null}
           icon={Percent}
           delay={80}
         />
         <KPICard
-          label="Units P&L"
-          value={`${stats.totalUnitsProfit >= 0 ? "+" : ""}${stats.totalUnitsProfit.toFixed(2)}u`}
-          sub={`Avg odds: ${stats.avgOdds.toFixed(2)}`}
-          positive={stats.totalUnitsProfit >= 0}
-          icon={TrendingUp}
+          label="Best Win"
+          value={stats.bestBet ? fmtCurrency(stats.bestBet.profit) : "—"}
+          sub={stats.bestBet ? stats.bestBet.event : "No wins yet"}
+          positive={stats.bestBet ? true : null}
+          icon={Trophy}
           delay={160}
         />
         <KPICard
@@ -93,11 +93,11 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
           delay={240}
         />
         <KPICard
-          label="Bets Placed"
-          value={String(stats.totalBets)}
-          sub={`${stats.pending} pending · ${stats.settledBets} settled`}
-          positive={null}
-          icon={Target}
+          label="Bankroll Growth"
+          value={fmtPct(stats.bankrollGrowth)}
+          sub={`${stats.settledBets} bets settled`}
+          positive={stats.bankrollGrowth >= 0}
+          icon={TrendingUp}
           delay={320}
         />
         <KPICard

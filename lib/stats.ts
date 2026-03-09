@@ -54,6 +54,7 @@ export interface FundStats {
   worstBet: Bet | null;
   avgOdds: number;
   avgOddsWins: number;
+  bankrollGrowth: number;
 }
 
 export function calcStats(bets: Bet[], startingBankroll: number): FundStats {
@@ -87,6 +88,7 @@ export function calcStats(bets: Bet[], startingBankroll: number): FundStats {
 
   const avgOdds = settled.length > 0 ? settled.reduce((sum, b) => sum + b.odds, 0) / settled.length : 0;
   const avgOddsWins = wins.length > 0 ? wins.reduce((sum, b) => sum + b.odds, 0) / wins.length : 0;
+  const bankrollGrowth = startingBankroll > 0 ? (totalProfit / startingBankroll) * 100 : 0;
 
   return {
     totalBets: bets.length,
@@ -107,6 +109,7 @@ export function calcStats(bets: Bet[], startingBankroll: number): FundStats {
     worstBet,
     avgOdds,
     avgOddsWins,
+    bankrollGrowth,
   };
 }
 
