@@ -2,6 +2,62 @@ export type BetResult = 'win' | 'loss' | 'push' | 'pending';
 export type BetType = 'h2h' | 'line' | 'total' | 'multi' | 'sgm' | 'prop' | 'outright';
 export type Sport = 'AFL' | 'NRL';
 
+export interface HistoricalMatch {
+  date: string;
+  year: number;
+  round: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore: number;
+  awayScore: number;
+  venue: string;
+  margin: number;
+  winner: string | null;
+  sport: Sport;
+  oddsHomeClose?: number;
+  oddsAwayClose?: number;
+  lineHomeClose?: number;
+  totalClose?: number;
+}
+
+export interface TeamSeasonSummary {
+  team: string;
+  year: number;
+  sport: Sport;
+  wins: number;
+  losses: number;
+  draws: number;
+  played: number;
+  winPct: number;
+  homeRecord: string;
+  awayRecord: string;
+  pointsFor: number;
+  pointsAgainst: number;
+  avgMargin: number;
+  form: string;
+  coverRate: number;
+}
+
+export interface LeagueSummary {
+  year: number;
+  sport: Sport;
+  totalMatches: number;
+  homeWinPct: number;
+  favWinPct: number;
+  avgMargin: number;
+  avgTotal: number;
+  upsetRate: number;
+  oversPct: number;
+  undersPct: number;
+}
+
+export interface SportHistory {
+  sport: Sport;
+  matches: HistoricalMatch[];
+  teamSummaries: TeamSeasonSummary[];
+  leagueSummaries: LeagueSummary[];
+}
+
 export interface Bet {
   id: string;
   date: string;
