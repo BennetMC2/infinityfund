@@ -1,0 +1,195 @@
+"use client";
+import { FundStats, Bet, FundConfig, fmtCurrency, fmtPct, betTypeLabel } from "@/lib/stats";
+import KPICard from "@/components/KPICard";
+import BetBadge from "@/components/BetBadge";
+import SportBadge from "@/components/SportBadge";
+import {
+  DollarSign, Percent, Target, TrendingUp, Zap, Award
+} from "lucide-react";
+import {
+  ResponsiveContainer, AreaChart, Area, XAxis, YAxis,
+  CartesianGrid, Tooltip
+} from "recharts";
+
+interface Props {
+  stats: FundStats;
+  equityCurve: { date: string; bankroll: number; label: string }[];
+  recentBets: Bet[];
+  config: FundConfig;
+}
+
+const PAGE_STYLE = { padding: "32px 36px", maxWidth: "1200px" };
+const SECTION_TITLE: React.CSSProperties = {
+  fontSize: "13px",
+  fontWeight: 600,
+  color: "var(--text-secondary)",
+  textTransform: "uppercase",
+  letterSpacing: "0.07em",
+  marginBottom: "16px",
+};
+
+function CustomTooltip({ active, payload }: { active?: boolean; payload?: { value: number }[] }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{
+      background: "var(--surface-2)", border: "1px solid var(--border)",
+      borderRadius: "8px", padding: "10px 14px",
+    }}>
+      <div style={{ color: "var(--text-secondary)", fontSize: "12px" }}>Bankroll</div>
+      <div style={{ color: "var(--accent)", fontWeight: 700, fontSize: "16px" }}>
+        ${payload[0].value.toLocaleString("en-AU")}
+      </div>
+    </div>
+  );
+}
+
+export default function DashboardClient({ stats, equityCurve, recentBets, config }: Props) {
+  const pnlPositive = stats.totalProfit >= 0;
+
+  return (
+    <div style={PAGE_STYLE}>
+      {/* Header */}
+      <div style={{ marginBottom: "32px" }}>
+        <h1 style={{ fontSize: "26px", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
+          Dashboard
+        </h1>
+        <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px" }}>
+          {config.fundName} · {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}
+        </div>
+      </div>
+
+      {/* KPI Grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", marginBottom: "32px" }}>
+        <KPICard
+          label="Total P&L"
+          value={fmtCurrency(stats.totalProfit)}
+          sub={`ROI: ${fmtPct(stats.roi)}`}
+          positive={pnlPositive}
+          icon={DollarSign}
+          delay={0}
+        />
+        <KPICard
+          label="Win Rate"
+          value={`${stats.winRate.toFixed(1)}%`}
+          sub={`${stats.wins}W · ${stats.losses}L · ${stats.pushes}P`}
+          positive={stats.winRate >= 50}
+          icon={Percent}
+          delay={80}
+        />
+        <KPICard
+          label="Units P&L"
+          value={`${stats.totalUnitsProfit >= 0 ? "+" : ""}${stats.totalUnitsProfit.toFixed(2)}u`}
+          sub={`Avg odds: ${stats.avgOdds.toFixed(2)}`}
+          positive={stats.totalUnitsProfit >= 0}
+          icon={TrendingUp}
+          delay={160}
+        />
+        <KPICard
+          label="Bankroll"
+          value={`$${stats.currentBankroll.toLocaleString("en-AU")}`}
+          sub={`Started at $${config.startingBankroll.toLocaleString("en-AU")}`}
+          accent
+          icon={Award}
+          delay={240}
+        />
+        <KPICard
+          label="Bets Placed"
+          value={String(stats.totalBets)}
+          sub={`${stats.pending} pending · ${stats.settledBets} settled`}
+          positive={null}
+          icon={Target}
+          delay={320}
+        />
+        <KPICard
+          label="Current Streak"
+          value={stats.streakType ? `${stats.currentStreak} ${stats.streakType === "win" ? "W" : "L"}` : "—"}
+          sub={stats.streakType === "win" ? "On fire" : stats.streakType === "loss" ? "Bounce back time" : "No bets yet"}
+          positive={stats.streakType === "win" ? true : stats.streakType === "loss" ? false : null}
+          icon={Zap}
+          delay={400}
+        />
+      </div>
+
+      {/* Equity Curve */}
+      <div style={{
+        background: "var(--surface)", border: "1px solid var(--border)",
+        borderRadius: "12px", padding: "24px", marginBottom: "32px",
+      }}>
+        <div style={SECTION_TITLE}>Bankroll Equity Curve</div>
+        <ResponsiveContainer width="100%" height={220}>
+          <AreaChart data={equityCurve} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+            <defs>
+              <linearGradient id="bankrollGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <XAxis dataKey="label" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} tickLine={false} axisLine={false} />
+            <YAxis
+              tick={{ fill: "var(--text-secondary)", fontSize: 11 }}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={v => `$${(v / 1000).toFixed(1)}k`}
+              domain={["auto", "auto"]}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey="bankroll"
+              stroke="#f59e0b"
+              strokeWidth={2.5}
+              fill="url(#bankrollGradient)"
+              dot={{ fill: "#f59e0b", r: 3, strokeWidth: 0 }}
+              activeDot={{ fill: "#f59e0b", r: 5, strokeWidth: 0 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Recent Bets */}
+      <div>
+        <div style={SECTION_TITLE}>Recent Bets</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {recentBets.map(bet => (
+            <div
+              key={bet.id}
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "10px",
+                padding: "14px 18px",
+                display: "flex",
+                alignItems: "center",
+                gap: "16px",
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px", flexWrap: "wrap" }}>
+                  <SportBadge sport={bet.sport} />
+                  <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>
+                    {bet.event}
+                  </span>
+                </div>
+                <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
+                  {bet.selection} · {betTypeLabel(bet.betType)} · @{bet.odds.toFixed(2)} · {bet.round}
+                </div>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  color: bet.result === "win" ? "var(--green)" : bet.result === "loss" ? "var(--red)" : "var(--text-secondary)",
+                  marginBottom: "4px",
+                }}>
+                  {bet.result === "pending" ? "—" : fmtCurrency(bet.profit)}
+                </div>
+                <BetBadge result={bet.result} size="sm" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
