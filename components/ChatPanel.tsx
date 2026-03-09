@@ -303,10 +303,10 @@ export default function ChatPanel({ isOpen, onClose }: { isOpen: boolean; onClos
                     color: "#000",
                   }}
                 >
-                  AI
+                  G
                 </div>
                 <span style={{ fontSize: 15, fontWeight: 600, color: "var(--text-primary)" }}>
-                  AI Analyst
+                  GAMBLOR
                 </span>
               </div>
               <div style={{ display: "flex", gap: 4 }}>
@@ -388,14 +388,14 @@ export default function ChatPanel({ isOpen, onClose }: { isOpen: boolean; onClos
                       color: "#000",
                     }}
                   >
-                    AI
+                    G
                   </div>
                   <div style={{ fontSize: 15, fontWeight: 600, color: "var(--text-primary)" }}>
-                    Infinity Fund Analyst
+                    GAMBLOR
                   </div>
                   <div style={{ fontSize: 13, lineHeight: 1.5 }}>
-                    Ask me about fund performance, bet evaluations, or strategy advice. I have full
-                    context of your betting data.
+                    I am Gamblor! I have wrapped my neon tentacles around your betting data
+                    and I shall never let go. Ask me anything, mortal.
                   </div>
                   <div
                     style={{
@@ -407,9 +407,9 @@ export default function ChatPanel({ isOpen, onClose }: { isOpen: boolean; onClos
                     }}
                   >
                     {[
-                      "How is the fund performing?",
-                      "Which bet types are most profitable?",
-                      "What odds range has the best ROI?",
+                      "How is the fund performing, Gamblor?",
+                      "Which bet types should I feed you?",
+                      "Am I in your neon tentacle grip yet?",
                     ].map((q) => (
                       <button
                         key={q}
@@ -583,7 +583,7 @@ export default function ChatPanel({ isOpen, onClose }: { isOpen: boolean; onClos
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   onPaste={handlePaste}
-                  placeholder="Ask about your fund..."
+                  placeholder="Speak to Gamblor..."
                   rows={1}
                   style={{
                     flex: 1,
