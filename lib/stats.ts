@@ -1,6 +1,6 @@
 export type BetResult = 'win' | 'loss' | 'push' | 'pending';
 export type BetType = 'h2h' | 'line' | 'total' | 'multi' | 'sgm' | 'prop' | 'outright';
-export type Sport = 'AFL' | 'NRL';
+export type Sport = 'AFL' | 'NRL' | 'Soccer';
 
 export interface HistoricalMatch {
   date: string;
