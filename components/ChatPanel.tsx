@@ -394,8 +394,7 @@ export default function ChatPanel({ isOpen, onClose }: { isOpen: boolean; onClos
                     GAMBLOR
                   </div>
                   <div style={{ fontSize: 13, lineHeight: 1.5 }}>
-                    I am Gamblor! I have wrapped my neon tentacles around your betting data
-                    and I shall never let go. Ask me anything, mortal.
+                    Your AI betting analyst. Ask me about fund performance, upcoming matchups, or get help evaluating picks.
                   </div>
                   <div
                     style={{
