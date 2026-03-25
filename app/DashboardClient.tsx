@@ -77,38 +77,41 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
         </h1>
         <div
           style={{
-            fontSize: "14px",
+            fontSize: "clamp(12px, 3vw, 14px)",
             color: hoverHeader ? "var(--accent)" : "var(--text-secondary)",
             marginTop: "4px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
-            gap: "8px",
-            width: "fit-content",
-            padding: "6px 12px",
+            gap: "clamp(4px, 2vw, 8px)",
+            width: "100%",
+            maxWidth: "fit-content",
+            padding: "8px 12px",
             borderRadius: "8px",
             transition: "all 0.2s ease",
             background: hoverHeader ? "var(--surface)" : "transparent",
             position: "relative",
             animation: "glow 2.5s ease-in-out infinite",
             border: hoverHeader ? "1px solid var(--accent)" : "1px solid transparent",
+            flexWrap: "wrap",
+            minHeight: "44px",
           }}
           onMouseEnter={() => setHoverHeader(true)}
           onMouseLeave={() => setHoverHeader(false)}
           onClick={() => setShowMemes(true)}
         >
-          <span style={{ display: "flex", alignItems: "center", gap: "6px", animation: hoverHeader ? "wiggle 0.5s ease-in-out infinite" : "none" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px", animation: hoverHeader ? "wiggle 0.5s ease-in-out infinite" : "none", whiteSpace: "nowrap" }}>
             {config.fundName}
-            <span style={{ display: "flex", gap: "2px", fontSize: "14px" }}>
+            <span style={{ display: "flex", gap: "2px", fontSize: "clamp(12px, 3vw, 14px)" }}>
               <span style={{ animation: "pulse-dot 1.2s ease-in-out infinite", animationDelay: "0s", color: "var(--accent)" }}>●</span>
               <span style={{ animation: "pulse-dot 1.2s ease-in-out infinite", animationDelay: "0.2s", color: "var(--accent)" }}>●</span>
               <span style={{ animation: "pulse-dot 1.2s ease-in-out infinite", animationDelay: "0.4s", color: "var(--accent)" }}>●</span>
             </span>
           </span>
-          <span style={{ fontSize: "18px", animation: "pulse-dot 1.5s ease-in-out infinite" }}>
+          <span style={{ fontSize: "clamp(16px, 4vw, 18px)", animation: "pulse-dot 1.5s ease-in-out infinite" }}>
             🎬
           </span>
-          <span>· {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}</span>
+          <span style={{ whiteSpace: "nowrap" }}>· {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}</span>
         </div>
       </div>
 
