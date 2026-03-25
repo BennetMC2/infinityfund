@@ -66,9 +66,6 @@ export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "24px" }}>
           {MEME_VIDEOS.map((video) => (
             <div key={video.id}>
-              <div style={{ marginBottom: "8px", fontSize: "14px", fontWeight: 600, color: "var(--text-secondary)" }}>
-                {video.title}
-              </div>
               <iframe
                 width="100%"
                 height="400"
@@ -81,10 +78,6 @@ export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
               />
             </div>
           ))}
-        </div>
-
-        <div style={{ marginTop: "24px", fontSize: "12px", color: "var(--text-secondary)", textAlign: "center" }}>
-          You found the easter egg! 🥚
         </div>
       </div>
     </div>
