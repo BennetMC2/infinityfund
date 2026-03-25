@@ -16,6 +16,7 @@ interface Props {
   equityCurve: { date: string; bankroll: number; label: string }[];
   recentBets: Bet[];
   config: FundConfig;
+  overview: string;
 }
 
 const PAGE_STYLE = { padding: "32px 36px", maxWidth: "1200px" };
@@ -43,7 +44,7 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: { valu
   );
 }
 
-export default function DashboardClient({ stats, equityCurve, recentBets, config }: Props) {
+export default function DashboardClient({ stats, equityCurve, recentBets, config, overview }: Props) {
   const pnlPositive = stats.totalProfit >= 0;
 
   return (
@@ -58,56 +59,104 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
         </div>
       </div>
 
-      {/* KPI Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px", marginBottom: "32px" }}>
-        <KPICard
-          label="Total P&L"
-          value={fmtCurrency(stats.totalProfit)}
-          sub={`ROI: ${fmtPct(stats.roi)}`}
-          positive={pnlPositive}
-          icon={DollarSign}
-          delay={0}
-        />
-        <KPICard
-          label="Win Rate"
-          value={`${stats.winRate.toFixed(1)}%`}
-          sub={`${stats.wins}W · ${stats.losses}L · ${stats.pushes}P`}
-          positive={null}
-          icon={Percent}
-          delay={80}
-        />
-        <KPICard
-          label="Best Win"
-          value={stats.bestBet ? fmtCurrency(stats.bestBet.profit) : "—"}
-          sub={stats.bestBet ? stats.bestBet.event : "No wins yet"}
-          positive={stats.bestBet ? true : null}
-          icon={Trophy}
-          delay={160}
-        />
-        <KPICard
-          label="Bankroll"
-          value={`$${stats.currentBankroll.toLocaleString("en-AU")}`}
-          sub={`Started at $${config.startingBankroll.toLocaleString("en-AU")}`}
-          accent
-          icon={Award}
-          delay={240}
-        />
-        <KPICard
-          label="Bankroll Growth"
-          value={fmtPct(stats.bankrollGrowth)}
-          sub={`${stats.settledBets} bets settled`}
-          positive={stats.bankrollGrowth >= 0}
-          icon={TrendingUp}
-          delay={320}
-        />
-        <KPICard
-          label="Current Streak"
-          value={stats.streakType ? `${stats.currentStreak} ${stats.streakType === "win" ? "W" : "L"}` : "—"}
-          sub={stats.streakType === "win" ? "On fire" : stats.streakType === "loss" ? "Bounce back time" : "No bets yet"}
-          positive={stats.streakType === "win" ? true : stats.streakType === "loss" ? false : null}
-          icon={Zap}
-          delay={400}
-        />
+      {/* INPUTS Section */}
+      <div style={{ marginBottom: "24px" }}>
+        <div style={SECTION_TITLE}>Inputs</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+          <KPICard
+            label="# Bets"
+            value={stats.settledBets.toString()}
+            sub={`${stats.pending} pending`}
+            positive={null}
+            icon={DollarSign}
+            delay={0}
+          />
+          <KPICard
+            label="Total Staked"
+            value={`$${stats.totalStaked.toLocaleString("en-AU")}`}
+            sub={`Avg: $${stats.avgStake.toLocaleString("en-AU", { maximumFractionDigits: 0 })}`}
+            positive={null}
+            icon={DollarSign}
+            delay={80}
+          />
+        </div>
+      </div>
+
+      {/* OUTCOMES Section */}
+      <div style={{ marginBottom: "24px" }}>
+        <div style={SECTION_TITLE}>Outcomes</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+          <KPICard
+            label="Net Return"
+            value={fmtCurrency(stats.totalProfit)}
+            sub={`${stats.wins}W · ${stats.losses}L · ${stats.pushes}P`}
+            positive={pnlPositive}
+            icon={DollarSign}
+            delay={0}
+          />
+          <KPICard
+            label="Win %"
+            value={`${stats.winRate.toFixed(1)}%`}
+            sub={`Need ${stats.breakEvenWinRate.toFixed(1)}% to break even`}
+            positive={null}
+            icon={Percent}
+            delay={80}
+          />
+          <KPICard
+            label="ROI"
+            value={fmtPct(stats.roi)}
+            sub={`On $${stats.totalStaked.toLocaleString("en-AU")}`}
+            positive={stats.roi >= 0}
+            icon={TrendingUp}
+            delay={160}
+          />
+        </div>
+      </div>
+
+      {/* OTHER Section */}
+      <div style={{ marginBottom: "32px" }}>
+        <div style={SECTION_TITLE}>Other</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+          <KPICard
+            label="Bankroll"
+            value={`$${stats.currentBankroll.toLocaleString("en-AU")}`}
+            sub={`Started at $${config.startingBankroll.toLocaleString("en-AU")}`}
+            accent
+            icon={Award}
+            delay={0}
+          />
+          <KPICard
+            label="Profit Factor"
+            value={stats.profitFactor === Infinity ? "∞" : stats.profitFactor.toFixed(2)}
+            sub="Gross wins ÷ gross losses"
+            positive={null}
+            icon={Trophy}
+            delay={80}
+          />
+          <KPICard
+            label="Current Streak"
+            value={stats.streakType ? `${stats.currentStreak} ${stats.streakType === "win" ? "W" : "L"}` : "—"}
+            sub={stats.streakType === "win" ? "On fire" : stats.streakType === "loss" ? "Bounce back time" : "No bets yet"}
+            positive={stats.streakType === "win" ? true : stats.streakType === "loss" ? false : null}
+            icon={Zap}
+            delay={160}
+          />
+        </div>
+      </div>
+
+      {/* Overview Card */}
+      <div style={{
+        background: "var(--surface-2)",
+        border: "1px solid var(--border)",
+        borderRadius: "12px",
+        borderLeft: "4px solid var(--accent)",
+        padding: "24px",
+        marginBottom: "32px",
+      }}>
+        <div style={SECTION_TITLE}>Fund Analysis</div>
+        <div style={{ fontSize: "14px", color: "var(--text-primary)", lineHeight: "1.8", whiteSpace: "pre-line" }}>
+          {overview}
+        </div>
       </div>
 
       {/* Equity Curve */}
