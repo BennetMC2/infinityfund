@@ -8,6 +8,7 @@ interface MemeModalProps {
 const MEME_VIDEOS = [
   { id: "RFvFh5-3IEs", title: "David Brent Classic" },
   { id: "WyxgCvPOtz0", title: "Gareth Moment" },
+  { id: "s_padKPbfDo", title: "Morgana Banker" },
 ];
 
 export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
