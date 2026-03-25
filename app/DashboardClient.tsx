@@ -46,6 +46,18 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: { valu
   );
 }
 
+const PULSE_ANIMATION = `
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes float-up {
+    0% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+`;
+
 export default function DashboardClient({ stats, equityCurve, recentBets, config, overview }: Props) {
   const [showMemes, setShowMemes] = useState(false);
   const [hoverHeader, setHoverHeader] = useState(false);
@@ -53,6 +65,7 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
 
   return (
     <div style={PAGE_STYLE}>
+      <style>{PULSE_ANIMATION}</style>
       {/* Header */}
       <div style={{ marginBottom: "32px" }}>
         <h1 style={{ fontSize: "26px", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
@@ -72,12 +85,20 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
             borderRadius: "6px",
             transition: "all 0.2s ease",
             background: hoverHeader ? "var(--surface)" : "transparent",
+            position: "relative",
           }}
           onMouseEnter={() => setHoverHeader(true)}
           onMouseLeave={() => setHoverHeader(false)}
           onClick={() => setShowMemes(true)}
         >
-          <span>{config.fundName}</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            {config.fundName}
+            <span style={{ display: "flex", gap: "2px", opacity: hoverHeader ? 1 : 0.5, transition: "opacity 0.2s ease" }}>
+              <span style={{ fontSize: "12px", animation: "pulse-dot 1.5s ease-in-out infinite", animationDelay: "0s" }}>●</span>
+              <span style={{ fontSize: "12px", animation: "pulse-dot 1.5s ease-in-out infinite", animationDelay: "0.2s" }}>●</span>
+              <span style={{ fontSize: "12px", animation: "pulse-dot 1.5s ease-in-out infinite", animationDelay: "0.4s" }}>●</span>
+            </span>
+          </span>
           <span style={{ fontSize: "16px", opacity: hoverHeader ? 1 : 0, transition: "opacity 0.2s ease" }}>
             🎬
           </span>
