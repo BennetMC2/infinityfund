@@ -10,24 +10,34 @@ const links = [
   { href: "/strategy", label: "Strategy", icon: TrendingUp },
 ];
 
+const NAV_STYLES = `
+  @media (max-width: 768px) {
+    nav {
+      display: none !important;
+    }
+  }
+`;
+
 export default function Nav() {
   const pathname = usePathname();
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        height: "100vh",
-        width: "240px",
-        background: "var(--surface)",
-        borderRight: "1px solid var(--border)",
-        display: "flex",
-        flexDirection: "column",
-        padding: "0",
-        zIndex: 50,
-      }}
-    >
+    <>
+      <style>{NAV_STYLES}</style>
+      <nav
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          height: "100vh",
+          width: "240px",
+          background: "var(--surface)",
+          borderRight: "1px solid var(--border)",
+          display: "flex",
+          flexDirection: "column",
+          padding: "0",
+          zIndex: 50,
+        }}
+      >
       {/* Logo */}
       <div style={{ padding: "28px 24px 24px", borderBottom: "1px solid var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -108,5 +118,6 @@ export default function Nav() {
         </div>
       </div>
     </nav>
+    </>
   );
 }
