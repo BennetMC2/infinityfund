@@ -9,6 +9,7 @@ const MEME_VIDEOS = [
   { id: "RFvFh5-3IEs" },
   { id: "WyxgCvPOtz0" },
   { id: "s_padKPbfDo" },
+  { id: "EEFMVIfl2UY" },
 ];
 
 export default function MemeModal({ isOpen, onClose }: MemeModalProps) {
