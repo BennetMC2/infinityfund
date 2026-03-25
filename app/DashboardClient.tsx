@@ -48,13 +48,17 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: { valu
 
 const PULSE_ANIMATION = `
   @keyframes pulse-dot {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1); }
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
   }
-  @keyframes float-up {
-    0% { opacity: 0; transform: translateY(0); }
-    50% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-20px); }
+  @keyframes wiggle {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 0px rgba(245, 158, 11, 0); }
+    50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); }
   }
 `;
 
@@ -81,25 +85,27 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
             alignItems: "center",
             gap: "8px",
             width: "fit-content",
-            padding: "4px 8px",
-            borderRadius: "6px",
+            padding: "6px 12px",
+            borderRadius: "8px",
             transition: "all 0.2s ease",
             background: hoverHeader ? "var(--surface)" : "transparent",
             position: "relative",
+            animation: "glow 2.5s ease-in-out infinite",
+            border: hoverHeader ? "1px solid var(--accent)" : "1px solid transparent",
           }}
           onMouseEnter={() => setHoverHeader(true)}
           onMouseLeave={() => setHoverHeader(false)}
           onClick={() => setShowMemes(true)}
         >
-          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px", animation: hoverHeader ? "wiggle 0.5s ease-in-out infinite" : "none" }}>
             {config.fundName}
-            <span style={{ display: "flex", gap: "2px", opacity: hoverHeader ? 1 : 0.5, transition: "opacity 0.2s ease" }}>
-              <span style={{ fontSize: "12px", animation: "pulse-dot 1.5s ease-in-out infinite", animationDelay: "0s" }}>●</span>
-              <span style={{ fontSize: "12px", animation: "pulse-dot 1.5s ease-in-out infinite", animationDelay: "0.2s" }}>●</span>
-              <span style={{ fontSize: "12px", animation: "pulse-dot 1.5s ease-in-out infinite", animationDelay: "0.4s" }}>●</span>
+            <span style={{ display: "flex", gap: "2px", fontSize: "14px" }}>
+              <span style={{ animation: "pulse-dot 1.2s ease-in-out infinite", animationDelay: "0s", color: "var(--accent)" }}>●</span>
+              <span style={{ animation: "pulse-dot 1.2s ease-in-out infinite", animationDelay: "0.2s", color: "var(--accent)" }}>●</span>
+              <span style={{ animation: "pulse-dot 1.2s ease-in-out infinite", animationDelay: "0.4s", color: "var(--accent)" }}>●</span>
             </span>
           </span>
-          <span style={{ fontSize: "16px", opacity: hoverHeader ? 1 : 0, transition: "opacity 0.2s ease" }}>
+          <span style={{ fontSize: "18px", animation: "pulse-dot 1.5s ease-in-out infinite" }}>
             🎬
           </span>
           <span>· {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}</span>
