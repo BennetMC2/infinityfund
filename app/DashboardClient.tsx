@@ -126,7 +126,7 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
       {/* INPUTS Section */}
       <div style={{ marginBottom: "24px" }}>
         <div style={SECTION_TITLE}>Inputs</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "clamp(12px, 3vw, 16px)" }}>
           <KPICard
             label="# Bets"
             value={stats.settledBets.toString()}
@@ -149,7 +149,7 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
       {/* OUTCOMES Section */}
       <div style={{ marginBottom: "24px" }}>
         <div style={SECTION_TITLE}>Outcomes</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "clamp(12px, 3vw, 16px)" }}>
           <KPICard
             label="Net Return"
             value={fmtCurrency(stats.totalProfit)}
@@ -180,7 +180,7 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
       {/* OTHER Section */}
       <div style={{ marginBottom: "32px" }}>
         <div style={SECTION_TITLE}>Other</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "clamp(12px, 3vw, 16px)" }}>
           <KPICard
             label="Bankroll"
             value={`$${stats.currentBankroll.toLocaleString("en-AU")}`}
