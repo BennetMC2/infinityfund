@@ -1,8 +1,10 @@
 "use client";
+import { useState } from "react";
 import { FundStats, Bet, FundConfig, fmtCurrency, fmtPct, betTypeLabel } from "@/lib/stats";
 import KPICard from "@/components/KPICard";
 import BetBadge from "@/components/BetBadge";
 import SportBadge from "@/components/SportBadge";
+import MemeModal from "@/components/MemeModal";
 import {
   DollarSign, Percent, Trophy, TrendingUp, Zap, Award
 } from "lucide-react";
@@ -45,6 +47,7 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: { valu
 }
 
 export default function DashboardClient({ stats, equityCurve, recentBets, config, overview }: Props) {
+  const [showMemes, setShowMemes] = useState(false);
   const pnlPositive = stats.totalProfit >= 0;
 
   return (
@@ -54,10 +57,12 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
         <h1 style={{ fontSize: "26px", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
           Dashboard
         </h1>
-        <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px" }}>
+        <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px", cursor: "pointer" }} onClick={() => setShowMemes(true)}>
           {config.fundName} · {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}
         </div>
       </div>
+
+      <MemeModal isOpen={showMemes} onClose={() => setShowMemes(false)} />
 
       {/* INPUTS Section */}
       <div style={{ marginBottom: "24px" }}>
