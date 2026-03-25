@@ -48,6 +48,7 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: { valu
 
 export default function DashboardClient({ stats, equityCurve, recentBets, config, overview }: Props) {
   const [showMemes, setShowMemes] = useState(false);
+  const [hoverHeader, setHoverHeader] = useState(false);
   const pnlPositive = stats.totalProfit >= 0;
 
   return (
@@ -57,8 +58,30 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
         <h1 style={{ fontSize: "26px", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
           Dashboard
         </h1>
-        <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px", cursor: "pointer" }} onClick={() => setShowMemes(true)}>
-          {config.fundName} · {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}
+        <div
+          style={{
+            fontSize: "14px",
+            color: hoverHeader ? "var(--accent)" : "var(--text-secondary)",
+            marginTop: "4px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            width: "fit-content",
+            padding: "4px 8px",
+            borderRadius: "6px",
+            transition: "all 0.2s ease",
+            background: hoverHeader ? "var(--surface)" : "transparent",
+          }}
+          onMouseEnter={() => setHoverHeader(true)}
+          onMouseLeave={() => setHoverHeader(false)}
+          onClick={() => setShowMemes(true)}
+        >
+          <span>{config.fundName}</span>
+          <span style={{ fontSize: "16px", opacity: hoverHeader ? 1 : 0, transition: "opacity 0.2s ease" }}>
+            🎬
+          </span>
+          <span>· {config.season} Season · Starting bankroll ${config.startingBankroll.toLocaleString("en-AU")}</span>
         </div>
       </div>
 
