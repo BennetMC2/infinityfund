@@ -23,10 +23,11 @@ interface Props {
 
 const PAGE_STYLE = {
   padding: "clamp(16px, 4vw, 36px)",
-  maxWidth: "1200px",
+  maxWidth: "100%",
   margin: "0 auto",
   width: "100%",
   boxSizing: "border-box" as const,
+  overflowX: "hidden" as const,
 };
 const SECTION_TITLE: React.CSSProperties = {
   fontSize: "13px",
