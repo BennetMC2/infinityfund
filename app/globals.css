@@ -66,3 +66,20 @@ body {
   color: var(--text-primary) !important;
   border-radius: 8px !important;
 }
+
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+  nav {
+    display: none !important;
+    position: static !important;
+  }
+
+  main {
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
