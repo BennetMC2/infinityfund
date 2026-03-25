@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import MobileNav from "@/components/MobileNav";
 import ChatProvider from "@/components/ChatProvider";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({
       </head>
       <body style={{ background: "var(--background)", color: "var(--text-primary)" }}>
         <Nav />
+        <MobileNav />
         <ChatProvider>
           <main style={{ paddingLeft: "240px", minHeight: "100vh" }}>
             {children}
