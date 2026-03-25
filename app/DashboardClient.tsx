@@ -116,7 +116,7 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
       {/* OTHER Section */}
       <div style={{ marginBottom: "32px" }}>
         <div style={SECTION_TITLE}>Other</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
           <KPICard
             label="Bankroll"
             value={`$${stats.currentBankroll.toLocaleString("en-AU")}`}
@@ -132,14 +132,6 @@ export default function DashboardClient({ stats, equityCurve, recentBets, config
             positive={null}
             icon={Trophy}
             delay={80}
-          />
-          <KPICard
-            label="Current Streak"
-            value={stats.streakType ? `${stats.currentStreak} ${stats.streakType === "win" ? "W" : "L"}` : "—"}
-            sub={stats.streakType === "win" ? "On fire" : stats.streakType === "loss" ? "Bounce back time" : "No bets yet"}
-            positive={stats.streakType === "win" ? true : stats.streakType === "loss" ? false : null}
-            icon={Zap}
-            delay={160}
           />
         </div>
       </div>

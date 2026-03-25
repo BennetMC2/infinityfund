@@ -228,20 +228,20 @@ export function generateOverview(bets: Bet[], stats: FundStats, config: FundConf
 
   // Opening summary
   lines.push(
-    `${healthIcon} **Fund Status:** The Infinity Fund is currently in ${fundStatus}, having returned ${netReturn} across ${stats.settledBets} settled bets with an ROI of ${fmtPct(stats.roi)}.`
+    `${healthIcon} Fund Status: The Infinity Fund is currently in ${fundStatus}, having returned ${netReturn} across ${stats.settledBets} settled bets with an ROI of ${fmtPct(stats.roi)}.`
   );
   lines.push("");
 
   // Performance details
   lines.push(
-    `**Performance Analysis:** Win rate is sitting at ${stats.winRate.toFixed(1)}%, which is ${winContext} — your average odds are ${stats.avgOdds.toFixed(2)}. This suggests your bet selection is ${winDiff > -5 ? "reasonably disciplined" : "needs refinement"}. The profit factor of ${stats.profitFactor === Infinity ? "infinite (all wins)" : stats.profitFactor.toFixed(2)}x indicates your winning bets are ${stats.profitFactor > 1.5 ? "substantially outpacing" : stats.profitFactor > 1.0 ? "modestly outpacing" : "underperforming relative to"} your losses.`
+    `Performance Analysis: Win rate is sitting at ${stats.winRate.toFixed(1)}%, which is ${winContext} — your average odds are ${stats.avgOdds.toFixed(2)}. This suggests your bet selection is ${winDiff > -5 ? "reasonably disciplined" : "needs refinement"}. The profit factor of ${stats.profitFactor === Infinity ? "infinite (all wins)" : stats.profitFactor.toFixed(2)}x indicates your winning bets are ${stats.profitFactor > 1.5 ? "substantially outpacing" : stats.profitFactor > 1.0 ? "modestly outpacing" : "underperforming relative to"} your losses.`
   );
   lines.push("");
 
   // Sport breakdown
   if (bestSport) {
     lines.push(
-      `**By Sport:** ${bestSport.sport} is your strongest market (+$${bestSport.profit.toLocaleString()} across ${bestSport.total} bets, ${bestSport.winRate.toFixed(1)}% win rate).${worstSport && worstSport.profit < bestSport.profit ? ` ${worstSport.sport} is lagging behind at ${worstSport.profit >= 0 ? "+" : ""}$${worstSport.profit.toLocaleString()}.` : ""}`
+      `By Sport: ${bestSport.sport} is your strongest market (+$${bestSport.profit.toLocaleString()} across ${bestSport.total} bets, ${bestSport.winRate.toFixed(1)}% win rate).${worstSport && worstSport.profit < bestSport.profit ? ` ${worstSport.sport} is lagging behind at ${worstSport.profit >= 0 ? "+" : ""}$${worstSport.profit.toLocaleString()}.` : ""}`
     );
     lines.push("");
   }
@@ -249,25 +249,15 @@ export function generateOverview(bets: Bet[], stats: FundStats, config: FundConf
   // Bet type breakdown
   if (bestBetType) {
     lines.push(
-      `**By Bet Type:** ${betTypeLabel(bestBetType.type)} is your best performer (+$${bestBetType.profit.toLocaleString()} · ${((bestBetType.wins / bestBetType.total) * 100).toFixed(0)}% hits).${worstBetType && worstBetType.profit < 0 ? ` ${betTypeLabel(worstBetType.type).toLowerCase()}s are a concern, down -$${Math.abs(worstBetType.profit).toLocaleString()} — consider reducing exposure here.` : ""}`
+      `By Bet Type: ${betTypeLabel(bestBetType.type)} is your best performer (+$${bestBetType.profit.toLocaleString()} · ${((bestBetType.wins / bestBetType.total) * 100).toFixed(0)}% hits).${worstBetType && worstBetType.profit < 0 ? ` ${betTypeLabel(worstBetType.type).toLowerCase()}s are a concern, down -$${Math.abs(worstBetType.profit).toLocaleString()} — consider reducing exposure here.` : ""}`
     );
     lines.push("");
   }
 
   // Risk metrics
   lines.push(
-    `**Risk Profile:** Max drawdown is $${stats.maxDrawdown.toLocaleString()}, representing ${((stats.maxDrawdown / stats.currentBankroll) * 100).toFixed(1)}% of current bankroll. Current bankroll stands at $${stats.currentBankroll.toLocaleString()} (${fmtPct(stats.bankrollGrowth)} growth from starting capital of $${config.startingBankroll.toLocaleString()}).`
+    `Risk Profile: Max drawdown is $${stats.maxDrawdown.toLocaleString()}, representing ${((stats.maxDrawdown / stats.currentBankroll) * 100).toFixed(1)}% of current bankroll. Current bankroll stands at $${stats.currentBankroll.toLocaleString()} (${fmtPct(stats.bankrollGrowth)} growth from starting capital of $${config.startingBankroll.toLocaleString()}).`
   );
-  lines.push("");
-
-  // Momentum
-  if (stats.streakType === "win") {
-    lines.push(`**Momentum:** You're riding a ${stats.currentStreak}-bet winning streak. Momentum is positive — maintain your current approach and stake sizing.`);
-  } else if (stats.streakType === "loss") {
-    lines.push(`**Momentum:** Currently in a ${stats.currentStreak}-bet losing streak. This is a critical moment — review your recent selections and ensure you're sticking to your process rather than chasing losses.`);
-  } else {
-    lines.push(`**Momentum:** No settled bets yet — focus on building a solid foundation with disciplined bet selection.`);
-  }
 
   return lines.join("\n");
 }
